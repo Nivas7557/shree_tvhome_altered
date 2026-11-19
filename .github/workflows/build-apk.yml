@@ -1,4 +1,4 @@
-name: Build Android TV Launcher APK
+name: Android Debug APK
 
 on:
   workflow_dispatch:
@@ -6,25 +6,39 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
 
     steps:
-      - name: Checkout code
+      - name: Check out source
         uses: actions/checkout@v5
 
-      - name: Set up JDK 17
+      - name: Set up Java
         uses: actions/setup-java@v5
         with:
+          distribution: temurin
           java-version: '17'
-          distribution: 'temurin'
 
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v5
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v5
 
-      - name: Build Debug APK
-        run: gradle assembleDebug --stacktrace
+      - name: Get IST Time and Date
+        id: timestamp
+        run: |
+          STAMP=$(TZ='Asia/Kolkata' date +'%H-%M_%d-%m')
+          echo "dt=$STAMP" >> $GITHUB_OUTPUT
 
-      - name: Upload APK Artifact
+      - name: Build debug APK
+        run: gradle assembleDebug
+
+      - name: Rename APK with Timestamp
+        run: |
+          mv app/build/outputs/apk/debug/app-debug.apk app/build/outputs/apk/debug/app-debug_${{ steps.timestamp.outputs.dt }}.apk
+
+      - name: Upload debug APK artifact
         uses: actions/upload-artifact@v5
         with:
-          name: Shree-TV-Home-Debug-APK
-          path: app/build/outputs/apk/debug/app-debug.apk
+          name: Nivas_Launcher_${{ steps.timestamp.outputs.dt }}
+          path: app/build/outputs/apk/debug/app-debug_${{ steps.timestamp.outputs.dt }}.apk
+          retention-days: 7
+          if-no-files-found: error
