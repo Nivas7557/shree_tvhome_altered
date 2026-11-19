@@ -1,8 +1,6 @@
 name: Build Android TV Launcher APK
 
 on:
-  push:
-    branches: [ "main" ]
   workflow_dispatch:
 
 jobs:
