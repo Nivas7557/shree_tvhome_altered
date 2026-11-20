@@ -55,7 +55,7 @@ object AppGridManager {
             textSize = 10f
             typeface = Typeface.DEFAULT_BOLD
             setTextColor(Color.argb(235, 220, 238, 255))
-            setPadding(dp(ctx, 9), dp(ctx, 2), dp(ctx, 9), dp(2))
+            setPadding(dp(ctx, 9), dp(ctx, 2), dp(ctx, 9), dp(ctx, 2))
             background = GradientDrawable().apply {
                 setColor(Color.argb(65, 255, 255, 255))
                 cornerRadius = LauncherUtils.dpF(ctx, 12f)
