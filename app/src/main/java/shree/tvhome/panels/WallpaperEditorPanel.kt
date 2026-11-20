@@ -5,14 +5,13 @@ import android.graphics.Color
 import android.graphics.Typeface
 import android.graphics.drawable.GradientDrawable
 import android.view.Gravity
-import android.view.View
 import android.widget.LinearLayout
 import android.widget.SeekBar
 import android.widget.TextView
 import android.widget.Toast
-import shree.tvhome.design.LauncherBackground
 import shree.tvhome.design.LauncherUtils
 import shree.tvhome.design.MotionEngine
+import shree.tvhome.source.LauncherBackground
 import shree.tvhome.source.LauncherPreferences
 import java.util.Locale
 
