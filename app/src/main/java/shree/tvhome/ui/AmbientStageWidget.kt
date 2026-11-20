@@ -455,6 +455,9 @@ class AmbientStageWidget(
                     tempTv.text = temp
                     condTv.text = desc
                     cityTv.text = "📍 $cityName  ▾"
+                    if (force) {
+                        android.widget.Toast.makeText(context, "$cityName: $temp • $desc", android.widget.Toast.LENGTH_SHORT).show()
+                    }
                 }
             } catch (_: Exception) {
             }
