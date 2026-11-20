@@ -129,18 +129,19 @@ class GlowTileLayout(context: Context) : FrameLayout(context) {
         val cy = h / 2f
 
         when (iconShape) {
-            "heart" -> {
-                val topDipY = top + s * 0.26f
-                val bottomTipY = bottom - s * 0.04f
+        "heart" -> {
+                val topDipY = top + s * 0.22f
+                val lobeTopY = top + s * 0.02f
+                val bottomTipY = bottom - s * 0.02f
                 target.moveTo(cx, bottomTipY)
                 target.cubicTo(
-                    left - s * 0.06f, top + s * 0.62f,
-                    left + s * 0.02f, top + s * 0.04f,
+                    left - s * 0.08f, top + s * 0.64f,
+                    left - s * 0.02f, lobeTopY,
                     cx, topDipY
                 )
                 target.cubicTo(
-                    right - s * 0.02f, top + s * 0.04f,
-                    right + s * 0.06f, top + s * 0.62f,
+                    right + s * 0.02f, lobeTopY,
+                    right + s * 0.08f, top + s * 0.64f,
                     cx, bottomTipY
                 )
                 target.close()
