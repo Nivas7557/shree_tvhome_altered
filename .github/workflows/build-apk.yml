@@ -25,7 +25,7 @@ jobs:
       - name: Generate IST Timestamp
         id: stamp
         run: |
-          TS=$(TZ=Asia/Kolkata date +"%I:%M%p_%d:%m")
+          TS=$(TZ=Asia/Kolkata date +"%I-%M%p_%d-%m")
           echo "ts=$TS" >> "$GITHUB_OUTPUT"
           echo "Generated Timestamp (IST): $TS"
 
