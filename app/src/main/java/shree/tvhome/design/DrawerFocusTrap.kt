@@ -1,4 +1,4 @@
-package shree.tvhome.panels
+package shree.tvhome.design
 
 import android.view.FocusFinder
 import android.view.KeyEvent
