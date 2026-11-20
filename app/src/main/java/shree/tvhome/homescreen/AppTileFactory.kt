@@ -174,7 +174,7 @@ object AppTileFactory {
         innerCard.addView(iv, FrameLayout.LayoutParams(-1, -1))
         unitContainer.addView(innerCard, LinearLayout.LayoutParams(iconBadgeSize, iconBadgeSize))
 
-     val namePlate = FrameLayout(ctx).apply {
+        val namePlate = FrameLayout(ctx).apply {
             tag = "name_plate"
             outlineProvider = null
             setPadding(dp(ctx, 10), dp(ctx, 3), dp(ctx, 10), dp(ctx, 3))
@@ -221,7 +221,7 @@ object AppTileFactory {
             }
 
             innerCard.setFocusState(hasFocus)
-            namePlate.background = nameplateBg(ctx, hasFocus, appColor)
+            namePlate.background = nameplateBg(ctx, hasFocus, lp.accentColor, appColor)
             MotionEngine.animateFocus(unitContainer, hasFocus, lp.motionStyle, 1.11f, 12f, dx, dy)
 
             if (hasFocus) {
@@ -301,7 +301,9 @@ object AppTileFactory {
             }
             card.setStyle(lp.accentColor, lp.tileShape, lp.tileColor, appCol)
         }
-        wrapper.findViewWithTag<TextView>("tile_label")?.textSize = if (lp.columns > 6) 9f else 10.2f
+        wrapper.findViewWithTag<FrameLayout>("name_plate")?.background =
+            nameplateBg(ctx, wrapper.hasFocus(), lp.accentColor, appCol)
+        wrapper.findViewWithTag<TextView>("tile_label")?.textSize = if (lp.columns > 6) 9f else 10f
         wrapper.findViewWithTag<TextView>("tile_badge")?.let { applyBadgeState(it, lp, isFav) }
     }
 
