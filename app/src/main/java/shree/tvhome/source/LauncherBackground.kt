@@ -60,15 +60,22 @@ object LauncherBackground {
     private var activeCanvas: AnimatedCanvasView? = null
     private var activePhotoAura: WeatherAuraView? = null
     private var activeWallpaperView: ImageView? = null
+    private var activeWallpaperBitmap: Bitmap? = null
     private val autoSyncHandler = Handler(Looper.getMainLooper())
     private var autoSyncRunnable: Runnable? = null
 
     fun apply(ctx: Context, root: FrameLayout, lp: LauncherPreferences) {
         stopAll()
+        root.findViewWithTag<View>("launcher_bg_layer")?.let { root.removeView(it) }
+        root.findViewWithTag<View>("launcher_bg_aura")?.let { root.removeView(it) }
+        activeWallpaperBitmap?.let { if (!it.isRecycled) it.recycle() }
+        activeWallpaperBitmap = null
+
         val uriStr = lp.prefs.getString(LauncherPreferences.PREF_WALLPAPER, null)
         if (!uriStr.isNullOrEmpty()) {
             val bmp = decodeSampledBitmapFromUri(ctx, Uri.parse(uriStr), 1920, 1080)
             if (bmp != null) {
+                activeWallpaperBitmap = bmp
                 val img = ImageView(ctx).apply {
                     tag = "launcher_bg_layer"
                     setImageBitmap(bmp)
@@ -197,7 +204,10 @@ object LauncherBackground {
         autoSyncRunnable = null
         activeCanvas = null
         activePhotoAura = null
+        activeWallpaperView?.setImageDrawable(null)
         activeWallpaperView = null
+        activeWallpaperBitmap?.let { if (!it.isRecycled) it.recycle() }
+        activeWallpaperBitmap = null
     }
 
     fun resolveEffectiveMode(lp: LauncherPreferences): String {
