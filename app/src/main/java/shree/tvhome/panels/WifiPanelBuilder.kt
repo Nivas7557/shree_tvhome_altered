@@ -15,6 +15,7 @@ import android.widget.Toast
 import shree.tvhome.design.LauncherUtils
 import shree.tvhome.design.MotionEngine
 import shree.tvhome.source.LauncherPreferences
+import shree.tvhome.source.SystemCapabilities
 import shree.tvhome.source.TileThemePalette
 import java.util.Locale
 
