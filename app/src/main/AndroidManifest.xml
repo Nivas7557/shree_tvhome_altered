@@ -23,11 +23,8 @@
     <application
         android:allowBackup="true"
         android:label="Shree TV Home"
-        android:banner="@mipmap/ic_launcher"
-        android:icon="@mipmap/ic_launcher"
-        android:roundIcon="@mipmap/ic_launcher_round"
         android:theme="@android:style/Theme.DeviceDefault.NoActionBar"
-        tools:targetApi="31">
+        tools:targetApi="35">
 
         <activity
             android:name=".MainActivity"
