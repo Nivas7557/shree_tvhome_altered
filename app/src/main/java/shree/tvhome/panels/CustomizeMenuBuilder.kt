@@ -292,11 +292,11 @@ object CustomizeMenuBuilder {
 
     private fun chipBg(ctx: Context, accent: Int, active: Boolean) = GradientDrawable(
         GradientDrawable.Orientation.TOP_BOTTOM,
-        if (active) intArrayOf(LauncherUtils.withAlpha(accent, 175), LauncherUtils.withAlpha(accent, 105))
+        if (active) intArrayOf(LauncherUtils.withAlpha(accent, 215), LauncherUtils.withAlpha(accent, 135))
         else intArrayOf(Color.argb(62, 255, 255, 255), Color.argb(30, 255, 255, 255))
     ).apply {
         cornerRadius = LauncherUtils.dpF(ctx, 12f)
-        setStroke(dp(ctx, if (active) 2 else 1), if (active) Color.WHITE else Color.argb(75, 255, 255, 255))
+        setStroke(dp(ctx, if (active) 2 else 1), if (active) Color.WHITE else LauncherUtils.withAlpha(accent, 150))
     }
 
     private fun swatchBg(ctx: Context, col: Int, active: Boolean) = GradientDrawable().apply {
