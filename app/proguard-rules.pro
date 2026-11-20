@@ -3,8 +3,8 @@
 -repackageclasses ''
 
 -keep public class shree.tvhome.MainActivity
--keep public class shree.tvhome.services.NightNudgeReceiver
--keep public class shree.tvhome.services.TvNotificationService
+-keep public class shree.tvhome.source.NightNudgeReceiver
+-keep public class shree.tvhome.source.TvNotificationService
 
 -assumenosideeffects class kotlin.jvm.internal.Intrinsics {
     public static void checkNotNull(...);
