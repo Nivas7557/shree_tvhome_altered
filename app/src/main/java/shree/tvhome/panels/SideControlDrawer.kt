@@ -104,8 +104,11 @@ class SideControlDrawer(
         val screenW = context.resources.displayMetrics.widthPixels
         val dynamicDrawerW = maxOf(LauncherUtils.dp(context, 250), (screenW * (lp.panelWidthPct / 100f)).toInt())
         drawerLayout.layoutParams.width = dynamicDrawerW
-        drawerLayout.clipChildren = false
-        drawerLayout.clipToPadding = false
+        drawerLayout.clipChildren = true
+        drawerLayout.clipToPadding = true
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            drawerLayout.clipToOutline = true
+        }
         drawerLayout.requestLayout()
 
         drawerLayout.background = GradientDrawable(
@@ -226,14 +229,17 @@ class SideControlDrawer(
     private fun populateActivePanel(isInitialOpen: Boolean) {
         val panel = activePanel ?: return
         panel.removeAllViews()
+        activeScroll?.scrollTo(0, 0)
 
         panel.alpha = 0f
-        panel.scaleY = 0.95f
+        panel.translationX = 0f
+        panel.translationY = 0f
+        panel.scaleX = 1f
+        panel.scaleY = 1f
         panel.animate()
             .alpha(1f)
-            .scaleY(1f)
-            .setDuration(260L)
-            .setInterpolator(LauncherUtils.FLUID_SPRING)
+            .setDuration(220L)
+            .setInterpolator(LauncherUtils.SILKY_EASE)
             .start()
 
         when (currentMode) {
@@ -402,15 +408,21 @@ class SideControlDrawer(
     }
 
     private fun buildPictureSubPanel(panel: LinearLayout) {
+        val displayIntent = Intent(Settings.ACTION_DISPLAY_SETTINGS)
+        if (displayIntent.resolveActivity(context.packageManager) != null) {
+            addActionButton(panel, "📺", "Open TV Display Settings", "System resolution, HDR & screen settings", Color.rgb(255, 195, 75)) {
+                try { context.startActivity(displayIntent) } catch (_: Exception) {}
+            }
+        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.System.canWrite(context)) {
-            addActionButton(panel, "🔓", "Enable System Write Access", "Required to modify system brightness & sleep timeout", Color.rgb(255, 195, 75)) {
+            addActionButton(panel, "🔓", "Enable System Write Access", "Required to modify system brightness & sleep timeout", Color.rgb(255, 110, 145)) {
                 try {
                     context.startActivity(Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS, Uri.parse("package:${context.packageName}")))
                 } catch (_: Exception) {}
             }
         }
         addLabel(panel, "LIVE BRIGHTNESS CONTROL")
-        addSliderCard(panel, "☀  Screen Brightness", brightnessPct, Color.rgb(255, 195, 75)) { p: Int ->
+        addSliderCard(panel, "☀  Screen Brightness", brightnessPct, lp.accentColor) { p: Int ->
             brightnessPct = p
             applyRealBrightness(p)
         }
@@ -419,6 +431,12 @@ class SideControlDrawer(
     }
 
     private fun buildSoundSubPanel(panel: LinearLayout) {
+        val soundIntent = Intent(Settings.ACTION_SOUND_SETTINGS)
+        if (soundIntent.resolveActivity(context.packageManager) != null) {
+            addActionButton(panel, "🎛", "Open TV Sound Settings", "System sound modes, surround & audio output", Color.rgb(46, 232, 138)) {
+                try { context.startActivity(soundIntent) } catch (_: Exception) {}
+            }
+        }
         addLabel(panel, "DISCOVERED AUDIO OUTPUTS")
         val am = context.getSystemService(Context.AUDIO_SERVICE) as? AudioManager
         val devices = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
