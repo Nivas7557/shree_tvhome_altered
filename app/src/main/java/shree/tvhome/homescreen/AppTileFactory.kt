@@ -174,27 +174,26 @@ object AppTileFactory {
         innerCard.addView(iv, FrameLayout.LayoutParams(-1, -1))
         unitContainer.addView(innerCard, LinearLayout.LayoutParams(iconBadgeSize, iconBadgeSize))
 
-        val namePlate = FrameLayout(ctx).apply {
+     val namePlate = FrameLayout(ctx).apply {
             tag = "name_plate"
             outlineProvider = null
-            setPadding(dp(ctx, 8), dp(ctx, 3), dp(ctx, 8), dp(ctx, 3))
-            background = nameplateBg(ctx, false, appColor)
+            setPadding(dp(ctx, 10), dp(ctx, 3), dp(ctx, 10), dp(ctx, 3))
+            background = nameplateBg(ctx, false, lp.accentColor, appColor)
         }
         val tv = TextView(ctx).apply {
             tag = "tile_label"
             text = label
-            textSize = if (lp.columns > 6) 9f else 10.2f
+            textSize = if (lp.columns > 6) 9f else 10f
             setTextColor(Color.WHITE)
             typeface = Typeface.DEFAULT_BOLD
             isSingleLine = true
+            maxWidth = dp(ctx, 118)
             ellipsize = TextUtils.TruncateAt.END
             gravity = Gravity.CENTER
         }
-        namePlate.addView(tv, FrameLayout.LayoutParams(-1, -2, Gravity.CENTER))
-        unitContainer.addView(namePlate, LinearLayout.LayoutParams(-1, -2).apply {
-            leftMargin = dp(ctx, 6)
-            rightMargin = dp(ctx, 6)
-            topMargin = dp(ctx, 3)
+        namePlate.addView(tv, FrameLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, Gravity.CENTER))
+        unitContainer.addView(namePlate, LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT).apply {
+            topMargin = dp(ctx, 4)
         })
 
         wrapper.addView(unitContainer, FrameLayout.LayoutParams(-1, -1, Gravity.CENTER))
