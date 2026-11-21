@@ -1,0 +1,48 @@
+name: Android Debug APK
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: "17"
+          distribution: "temurin"
+
+      - name: Setup Gradle
+        uses: gradle/setup-gradle@v4
+        with:
+          gradle-version: "8.7"
+
+      - name: Generate IST Timestamp
+        id: stamp
+        run: |
+          TS=$(TZ=Asia/Kolkata date +"%I:%M%p_%d:%m")
+          echo "ts=$TS" >> "$GITHUB_OUTPUT"
+          echo "Generated Timestamp (IST): $TS"
+
+      - name: Assemble Debug APK & Rename with Timestamp
+        run: |
+          gradle assembleDebug --stacktrace
+          TS="${{ steps.stamp.outputs.ts }}"
+          APK_DIR="app/build/outputs/apk/debug"
+          if [ -f "$APK_DIR/app-debug.apk" ]; then
+            cp "$APK_DIR/app-debug.apk" "$APK_DIR/shree-tvhome_${TS}.apk"
+            rm -f "$APK_DIR/app-debug.apk"
+          fi
+          ls -la "$APK_DIR"
+
+      - name: Upload Debug APK Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: shree-tvhome_${{ steps.stamp.outputs.ts }}
+          path: app/build/outputs/apk/debug/*.apk
+          if-no-files-found: error
